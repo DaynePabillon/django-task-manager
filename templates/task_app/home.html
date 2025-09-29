@@ -1,0 +1,26 @@
+{% extends 'task_app/base.html' %}
+
+{% block title %}Home - Task Manager{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <h2>Welcome to Task Manager</h2>
+    <p>Organize your tasks and boost your productivity!</p>
+    <a href="{% url 'task_app:task_list' %}" class="btn btn-primary">View Tasks</a>
+</div>
+
+<div class="features">
+    <div class="feature">
+        <h3>Task Organization</h3>
+        <p>Keep track of all your tasks in one place with priority levels.</p>
+    </div>
+    <div class="feature">
+        <h3>Status Tracking</h3>
+        <p>Monitor task progress from pending to completion.</p>
+    </div>
+    <div class="feature">
+        <h3>Due Dates</h3>
+        <p>Never miss a deadline with our due date tracking system.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'task_app/base.html' %}
+
+{% block title %}{{ task.title }} - Task Manager{% endblock %}
+
+{% block content %}
+<div class="task-detail">
+    <div class="task-header">
+        <h2>{{ task.title }}</h2>
+        <div class="task-badges">
+            <span class="priority priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+            <span class="status status-{{ task.status }}">{{ task.get_status_display }}</span>
+        </div>
+    </div>
+
+    <div class="task-content">
+        <div class="task-info">
+            <h3>Description</h3>
+            <p>{{ task.description|default:"No description provided." }}</p>
+
+            <div class="task-metadata">
+                <div class="meta-item">
+                    <strong>Created:</strong> {{ task.created_at|date:"F d, Y g:i A" }}
+                </div>
+                <div class="meta-item">
+                    <strong>Last Updated:</strong> {{ task.updated_at|date:"F d, Y g:i A" }}
+                </div>
+                {% if task.due_date %}
+                <div class="meta-item">
+                    <strong>Due Date:</strong> {{ task.due_date|date:"F d, Y" }}
+                </div>
+                {% endif %}
+                {% if task.assigned_to %}
+                <div class="meta-item">
+                    <strong>Assigned To:</strong> {{ task.assigned_to.username }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="task-actions">
+            <h3>Update Status</h3>
+            <form method="post" action="{% url 'task_app:update_task_status' task.id %}">
+                {% csrf_token %}
+                <select name="status" class="status-select">
+                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Completed</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Update Status</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="task-navigation">
+        <a href="{% url 'task_app:task_list' %}" class="btn btn-secondary">← Back to Tasks</a>
+    </div>
+</div>
+{% endblock %}
